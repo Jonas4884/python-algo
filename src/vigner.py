@@ -6,44 +6,44 @@ class VigenereCipher(object):
     def __str__(self):
         return f"{self.alphabet}\n{self.key}\n{len(self.alphabet)}"
 
-    def password_text(self, text):
-        password_text = []
-        i = 0
+    def text_to_password(self, text):
+        text_to_password = []
+        idx = 0
         for value in text:
-            if i == len(self.key):
-                i = 0
-            password_text.append([self.key[i], value])
-            i += 1
-        return password_text
+            if idx == len(self.key):
+                idx = 0
+            text_to_password.append([self.key[idx], value])
+            idx += 1
+        return text_to_password
 
     def encode(self, text):
-        zip_pas_and_text = self.password_text(text)
-        encode_text = ""
-        for i in zip_pas_and_text:
+        text_to_encode = self.text_to_password(text)
+        encoded_text = ""
+        for i in text_to_encode:
             if not i[1] in self.alphabet.keys():
-                encode_text += i[1]
+                encoded_text += i[1]
                 continue
-            p = self.alphabet[i[0]] + self.alphabet[i[1]]
-            temp = p if p < len(
-                self.alphabet) else p - len(self.alphabet)
+            res = self.alphabet[i[0]] + self.alphabet[i[1]]
+            temp = res if res < len(
+                self.alphabet) else res - len(self.alphabet)
             for j in self.alphabet.keys():
                 if self.alphabet[j] == temp:
-                    encode_text += j
+                    encoded_text += j
                     break
 
-        return encode_text
+        return encoded_text
 
     def decode(self, text):
-        zip_pas_and_text = self.password_text(text)
-        decode_text = ""
-        for i in zip_pas_and_text:
+        text_to_decode = self.text_to_password(text)
+        decoded_text = ""
+        for i in text_to_decode:
             if not i[1] in self.alphabet.keys():
-                decode_text += i[1]
+                decoded_text += i[1]
                 continue
-            p = self.alphabet[i[0]] - self.alphabet[i[1]]
-            temp = -1 * p if p <= 0 else len(self.alphabet) - p
+            res = self.alphabet[i[0]] - self.alphabet[i[1]]
+            temp = -1 * res if res <= 0 else len(self.alphabet) - res
             for j in self.alphabet.keys():
                 if self.alphabet[j] == temp:
-                    decode_text += j
+                    decoded_text += j
                     break
-        return decode_text
+        return decoded_text
